@@ -6,7 +6,9 @@ import 'match.dart';
 // Main menu widget, responsible for rendering new game options
 
 class MainMenu extends StatefulWidget {
-  MainMenu({Key? key}) : super(key: key);
+  MainMenu({Key? key, required this.playerReference}) : super(key: key);
+
+  final DocumentReference playerReference;
 
   @override
   _MainMenuState createState() => _MainMenuState();
@@ -25,25 +27,41 @@ class _MainMenuState extends State<MainMenu> {
         title: Text('Main menu'),
       ),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                final matchReference = await _matchesCollection
-                    .add({"player_1": "123123", "player_2": null});
-
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Match(matchReference: matchReference)),
+        child: StreamBuilder(
+            stream: widget.playerReference.snapshots(),
+            builder: (_, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: Text('Loading...'),
                 );
-              },
-              child: const Text('New game'),
-            ),
-          ],
-        ),
+              } else {
+                if (snapshot.hasError)
+                  return Text('Error: ${snapshot.error}');
+                else
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Player ID: ${widget.playerReference.id}'),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final matchReference = await _matchesCollection.add({
+                            "player_1": widget.playerReference.id,
+                            "player_2": null
+                          });
+
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Match(matchReference: matchReference)),
+                          );
+                        },
+                        child: const Text('New match'),
+                      ),
+                    ],
+                  );
+              }
+            }),
       ),
     );
   }
