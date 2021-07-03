@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "435918149723",
+    "project_id": "grupovermelho20211-3c0a5",
+    "storage_bucket": "grupovermelho20211-3c0a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435918149723:android:39d4ce9a0a9ad14de2477e",
+        "android_client_info": {
+          "package_name": "br.uff.ic.dm.grupovermelho20211"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435918149723-g41pdfhkbk2u4c416qtu8q93gr517sn4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4wx-b_KV5TkYziSNJ80kz38T8LpZFSBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435918149723-g41pdfhkbk2u4c416qtu8q93gr517sn4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
