@@ -53,7 +53,7 @@ class _MainMenuState extends State<MainMenu> {
                       Container(
                         padding: EdgeInsets.only(bottom: 36),
                         child: Text(
-                          'Table Times Game',
+                          'Times Table Game',
                           style: titleStyle,
                           textAlign: TextAlign.center,
                         ),
