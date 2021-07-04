@@ -5,9 +5,11 @@ import 'package:grupovermelho20211/styles/text.dart';
 // Main menu widget, responsible for rendering new game options
 
 class Match extends StatefulWidget {
-  Match({Key? key, required this.matchReference}) : super(key: key);
+  Match({Key? key, required this.matchReference, required this.playerReference})
+      : super(key: key);
 
   final DocumentReference matchReference;
+  final DocumentReference playerReference;
 
   @override
   _MatchState createState() => _MatchState();

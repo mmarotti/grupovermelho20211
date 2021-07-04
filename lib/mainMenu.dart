@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'styles/text.dart';
 
 import 'match.dart';
+import 'joinMatch.dart';
 
 // Main menu widget, responsible for rendering new game options
 
@@ -33,11 +34,12 @@ class _MainMenuState extends State<MainMenu> {
             builder: (_, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return Center(
-                  child: Text('Loading...'),
+                  child: Text('Loading...', style: secondaryTextStyle),
                 );
               } else {
                 if (snapshot.hasError)
-                  return Text('Error: ${snapshot.error}');
+                  return Text('Error: ${snapshot.error}',
+                      style: secondaryTextStyle);
                 else
                   return Column(
                     mainAxisSize: MainAxisSize.min,
@@ -69,8 +71,10 @@ class _MainMenuState extends State<MainMenu> {
                             await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      Match(matchReference: matchReference)),
+                                  builder: (context) => Match(
+                                        matchReference: matchReference,
+                                        playerReference: widget.playerReference,
+                                      )),
                             );
                           },
                           child: const Text('New match'),
@@ -79,7 +83,14 @@ class _MainMenuState extends State<MainMenu> {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => JoinMatch(
+                                      playerReference: widget.playerReference)),
+                            );
+                          },
                           child: const Text('Join match'),
                         ),
                       )
