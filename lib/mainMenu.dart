@@ -40,24 +40,52 @@ class _MainMenuState extends State<MainMenu> {
                 else
                   return Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text('Player ID: ${widget.playerReference.id}'),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final matchReference = await _matchesCollection.add({
-                            "player_1": widget.playerReference.id,
-                            "player_2": null
-                          });
-
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Match(matchReference: matchReference)),
-                          );
-                        },
-                        child: const Text('New match'),
+                      Icon(
+                        Icons.close_outlined,
+                        color: Colors.blueGrey,
+                        size: 120.0,
                       ),
+                      Container(
+                        padding: EdgeInsets.only(bottom: 36),
+                        child: Text(
+                          'Table Times Game',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey,
+                            fontSize: 36,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final matchReference = await _matchesCollection
+                                .add({
+                              "player_1": widget.playerReference.id,
+                              "player_2": null
+                            });
+
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Match(matchReference: matchReference)),
+                            );
+                          },
+                          child: const Text('New match'),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: const Text('Join match'),
+                        ),
+                      )
                     ],
                   );
               }
