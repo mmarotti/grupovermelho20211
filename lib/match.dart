@@ -49,7 +49,7 @@ class _MatchState extends State<Match> {
                     ],
                   );
                 else
-                  return Text('Player found');
+                  return Text('Player found', style: secondaryTextStyle);
               }
             }),
       ),
