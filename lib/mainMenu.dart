@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'styles/text.dart';
 
 import 'match.dart';
 
@@ -51,11 +52,7 @@ class _MainMenuState extends State<MainMenu> {
                         padding: EdgeInsets.only(bottom: 36),
                         child: Text(
                           'Table Times Game',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey,
-                            fontSize: 36,
-                          ),
+                          style: titleStyle,
                           textAlign: TextAlign.center,
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:grupovermelho20211/styles/text.dart';
 
 // Main menu widget, responsible for rendering new game options
 
@@ -25,8 +26,7 @@ class _MatchState extends State<Match> {
             builder: (_, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return Center(
-                  child: Text('Loading...'),
-                );
+                    child: Text('Loading...', style: secondaryTextStyle));
               } else {
                 if (snapshot.hasError)
                   return Text('Error: ${snapshot.error}');
@@ -34,8 +34,16 @@ class _MatchState extends State<Match> {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Match ID: ${widget.matchReference.id}'),
-                      Text('Waiting for second player...')
+                      Container(
+                        padding: EdgeInsets.only(bottom: 36),
+                        child: SelectableText(
+                          'Match ID: ${widget.matchReference.id}',
+                          style: primaryTextStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Text('Waiting for second player...',
+                          style: secondaryTextStyle)
                     ],
                   );
                 else
