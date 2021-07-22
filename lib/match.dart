@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grupovermelho20211/styles/text.dart';
+import 'dart:math';
 
 // Main menu widget, responsible for rendering new game options
 
@@ -49,7 +50,24 @@ class _MatchState extends State<Match> {
                     ],
                   );
                 else
-                  return Text('Player found', style: secondaryTextStyle);
+                  return Text(new Random().nextInt(10).toString());
+                /*
+                import 'dart:math';
+                main() {
+                  const suits = ['diamonds', 'clubs', 'hearts', 'spades'];
+                  var cards = [];
+                  for (var i = 0; i < suits.length; i++) {
+                    for( var j = 1 ; j <= 10; j++ ) {
+                      var cardName = '${j.toString()} of ${suits[i]}';
+                      var randomIndex = new Random().nextInt(cards.length + 1);
+                      cards.insert(randomIndex, cardName);
+                      }
+                  }
+                  // print(cards);
+                  var player1Cards = cards.sublist(0, 20);
+                  var player2Cards = cards.sublist(20);
+                }
+                 */
               }
             }),
       ),
