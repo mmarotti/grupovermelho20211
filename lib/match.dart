@@ -63,13 +63,41 @@ class _MatchState extends State<Match> {
                   var secondCard = playerCards[1];
 
                   snapshot.data?.reference.update({
+                    "round": 1,
                     "player_1_deck": firstDeck,
                     "player_1_card": firstCard,
                     "player_2_deck": secondDeck,
                     "player_2_card": secondCard,
+                    "answer": firstCard * secondCard,
                   });
 
                   builder = Text('Player found', style: secondaryTextStyle);
+                } else if (snapshot.data?['player_1_card'] != null &&
+                    snapshot.data?['player_2_card'] != null) {
+                  // builder = Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     Game.renderCard(snapshot.data?['player_1_card']),
+                  //     Game.renderCard(snapshot.data?['player_2_card']),
+                  //   ],
+                  // );
+
+                  builder = Container(
+                    padding: EdgeInsets.only(bottom: 36),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child:
+                              Game.renderCard(snapshot.data?['player_1_card']),
+                        ),
+                        Expanded(
+                          child:
+                              Game.renderCard(snapshot.data?['player_2_card']),
+                        )
+                      ],
+                    ),
+                  );
                 }
               }
 
