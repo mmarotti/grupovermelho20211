@@ -36,6 +36,7 @@ class _MatchState extends State<Match> {
                 if (snapshot.hasError) {
                   builder = Text('Error: ${snapshot.error}');
                 } else if (snapshot.data?['player_2'] == null) {
+                  // If player_2 not joined, stay in waiting state
                   builder = Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -54,6 +55,7 @@ class _MatchState extends State<Match> {
                 } else if ((this.lastSnapshot.data?['player_2'] == null) &&
                     (widget.playerReference.id ==
                         this.lastSnapshot.data?['player_1'])) {
+                  // If player_2 just joined, player_1 will initialize match
                   var playerDecks = Game.initializeDecks();
                   var firstDeck = playerDecks[0];
                   var secondDeck = playerDecks[1];
@@ -74,14 +76,7 @@ class _MatchState extends State<Match> {
                   builder = Text('Player found', style: secondaryTextStyle);
                 } else if (snapshot.data?['player_1_card'] != null &&
                     snapshot.data?['player_2_card'] != null) {
-                  // builder = Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: [
-                  //     Game.renderCard(snapshot.data?['player_1_card']),
-                  //     Game.renderCard(snapshot.data?['player_2_card']),
-                  //   ],
-                  // );
-
+                  // If cards already sorted, render cards
                   builder = Container(
                     padding: EdgeInsets.only(bottom: 36),
                     child: Row(
