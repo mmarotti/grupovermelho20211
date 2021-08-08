@@ -44,7 +44,7 @@ class Game {
     var number = card['number'];
 
     if (number == 2)
-      number = CardValue.two;
+      value = CardValue.two;
     else if (number == 3)
       value = CardValue.three;
     else if (number == 4)

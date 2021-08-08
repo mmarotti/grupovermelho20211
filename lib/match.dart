@@ -87,18 +87,29 @@ class _MatchState extends State<Match> {
                     snapshot.data?['player_2_card'] != null) {
                   // If cards already sorted, render cards
                   builder = Container(
-                    padding: EdgeInsets.only(bottom: 36),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child:
-                              Game.renderCard(snapshot.data?['player_1_card']),
-                        ),
-                        Expanded(
-                          child:
-                              Game.renderCard(snapshot.data?['player_2_card']),
-                        )
+                        Row(children: [
+                          Expanded(
+                            flex: 2,
+                            child: Game.renderCard(
+                                snapshot.data?['player_1_card']),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Game.renderCard(
+                                snapshot.data?['player_2_card']),
+                          )
+                        ]),
+                        Row(children: [
+                          Expanded(child:
+                              TextField(onSubmitted: (String value) async {
+                            print('bla');
+                          }))
+                        ])
                       ],
                     ),
                   );

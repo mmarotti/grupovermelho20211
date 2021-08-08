@@ -55,8 +55,6 @@ class _JoinMatchState extends State<JoinMatch> {
                           final matchSnapshot =
                               await _matchesCollection.doc(value).get();
 
-                          print(matchSnapshot.exists);
-
                           if (!matchSnapshot.exists) {
                             await showDialog<void>(
                               context: context,
