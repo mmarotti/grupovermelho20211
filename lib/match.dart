@@ -57,12 +57,21 @@ class _MatchState extends State<Match> {
                         this.lastSnapshot.data?['player_1'])) {
                   // If player_2 just joined, player_1 will initialize match
                   var playerDecks = Game.initializeDecks();
+
+                  print(playerDecks);
+
                   var firstDeck = playerDecks[0];
                   var secondDeck = playerDecks[1];
+
+                  print(firstDeck);
+                  print(secondDeck);
 
                   var playerCards = Game.getCards(firstDeck, secondDeck);
                   var firstCard = playerCards[0];
                   var secondCard = playerCards[1];
+
+                  print(firstCard);
+                  print(secondCard);
 
                   snapshot.data?.reference.update({
                     "round": 1,
@@ -70,7 +79,7 @@ class _MatchState extends State<Match> {
                     "player_1_card": firstCard,
                     "player_2_deck": secondDeck,
                     "player_2_card": secondCard,
-                    "answer": firstCard * secondCard,
+                    "answer": firstCard['number'] * secondCard['number'],
                   });
 
                   builder = Text('Player found', style: secondaryTextStyle);
