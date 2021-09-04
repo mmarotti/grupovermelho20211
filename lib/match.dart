@@ -52,9 +52,15 @@ class _MatchState extends State<Match> {
                           style: secondaryTextStyle)
                     ],
                   );
-                } else if ((this.lastSnapshot.data?['player_2'] == null) &&
-                    (widget.playerReference.id ==
-                        this.lastSnapshot.data?['player_1'])) {
+                } else if (snapshot.data?['winner'] != null) {
+                  if (widget.playerReference.id == snapshot.data?['winner']) {
+                    builder = Text('Congratulations you win!');
+                  } else {
+                    builder = Text('You lost, you will get it next time =)');
+                  }
+                } else if (this.lastSnapshot.data?['player_2'] == null &&
+                    widget.playerReference.id ==
+                        this.lastSnapshot.data?['player_1']) {
                   // If player_2 just joined, player_1 will initialize match
                   var playerDecks = Game.initializeDecks();
 
@@ -79,12 +85,17 @@ class _MatchState extends State<Match> {
                     "player_1_card": firstCard,
                     "player_2_deck": secondDeck,
                     "player_2_card": secondCard,
+                    "player_1_answered_at": null,
+                    "player_2_answered_at": null,
                     "answer": firstCard['number'] * secondCard['number'],
+                    "winner": null,
                   });
 
                   builder = Text('Player found', style: secondaryTextStyle);
                 } else if (snapshot.data?['player_1_card'] != null &&
-                    snapshot.data?['player_2_card'] != null) {
+                    snapshot.data?['player_2_card'] != null &&
+                    snapshot.data?['player_1_answered_at'] == null &&
+                    snapshot.data?['player_2_answered_at'] == null) {
                   // If cards already sorted, render cards
                   builder = Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -130,7 +141,7 @@ class _MatchState extends State<Match> {
                               );
                             } else {
                               if (widget.playerReference.id ==
-                                  this.lastSnapshot.data?['player_1']) {
+                                  snapshot.data?['player_1']) {
                                 snapshot.data?.reference.update({
                                   "player_1_answered_at": new DateTime.now(),
                                 });
@@ -145,6 +156,54 @@ class _MatchState extends State<Match> {
                       ],
                     ),
                   );
+                } else if ((snapshot.data?['player_1_answered_at'] != null &&
+                        snapshot.data?['player_2_answered_at'] == null) ||
+                    (snapshot.data?['player_2_answered_at'] != null &&
+                        snapshot.data?['player_1_answered_at'] == null)) {
+                  var firstPlayerDeck = snapshot.data?['player_1_deck'];
+                  var secondPlayerDeck = snapshot.data?['player_2_deck'];
+                  var playerOneCard = snapshot.data?['player_1_card'];
+                  var playerTwoCard = snapshot.data?['player_2_card'];
+
+                  if (snapshot.data?['player_1_answered_at'] != null) {
+                    firstPlayerDeck.add(playerTwoCard);
+                  } else {
+                    secondPlayerDeck.add(playerOneCard);
+                  }
+
+                  var round = this.lastSnapshot.data?['round'];
+
+                  if (round < 7) {
+                    var playerCards =
+                        Game.getCards(firstPlayerDeck, secondPlayerDeck);
+
+                    var firstCard = playerCards[0];
+                    var secondCard = playerCards[1];
+
+                    print(firstCard);
+                    print(secondCard);
+
+                    snapshot.data?.reference.update({
+                      "round": snapshot.data?['round'] + 1,
+                      "player_1_deck": firstPlayerDeck,
+                      "player_1_card": firstCard,
+                      "player_2_deck": secondPlayerDeck,
+                      "player_2_card": secondCard,
+                      "player_1_answered_at": null,
+                      "player_2_answered_at": null,
+                      "answer": firstCard['number'] * secondCard['number'],
+                    });
+                  } else {
+                    if (firstPlayerDeck.length > secondPlayerDeck.length) {
+                      snapshot.data?.reference.update({
+                        "winner": this.lastSnapshot.data?['player_1'],
+                      });
+                    } else {
+                      snapshot.data?.reference.update({
+                        "winner": this.lastSnapshot.data?['player_2'],
+                      });
+                    }
+                  }
                 }
               }
 

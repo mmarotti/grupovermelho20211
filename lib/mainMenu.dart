@@ -62,10 +62,19 @@ class _MainMenuState extends State<MainMenu> {
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: ElevatedButton(
                           onPressed: () async {
-                            final matchReference = await _matchesCollection
-                                .add({
+                            final matchReference =
+                                await _matchesCollection.add({
                               "player_1": widget.playerReference.id,
-                              "player_2": null
+                              "player_2": null,
+                              "winner": null,
+                              "round": null,
+                              "player_1_deck": null,
+                              "player_1_card": null,
+                              "player_2_deck": null,
+                              "player_2_card": null,
+                              "player_1_answered_at": null,
+                              "player_2_answered_at": null,
+                              "answer": null,
                             });
 
                             await Navigator.push(
