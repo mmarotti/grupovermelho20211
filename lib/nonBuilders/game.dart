@@ -17,13 +17,15 @@ class Game {
 
     fullDeck.shuffle();
 
+    var fullDeckLength = fullDeck.length;
+
     return [
       fullDeck.sublist(
         0,
-        12,
+        (fullDeckLength / 2).round(),
       ),
       fullDeck.sublist(
-        12,
+        (fullDeckLength / 2).round(),
       )
     ];
   }

@@ -53,7 +53,10 @@ class _MatchState extends State<Match> {
                     ],
                   );
                 } else if (snapshot.data?['winner'] != null) {
+                  print(widget.playerReference.id);
+                  print(snapshot.data?['winner']);
                   if (widget.playerReference.id == snapshot.data?['winner']) {
+
                     builder = Text('Congratulations you win!');
                   } else {
                     builder = Text('You lost, you will get it next time =)');
@@ -142,6 +145,7 @@ class _MatchState extends State<Match> {
                             } else {
                               if (widget.playerReference.id ==
                                   snapshot.data?['player_1']) {
+                                print('Player one got it right');
                                 snapshot.data?.reference.update({
                                   "player_1_answered_at": new DateTime.now(),
                                 });
@@ -165,11 +169,28 @@ class _MatchState extends State<Match> {
                   var playerOneCard = snapshot.data?['player_1_card'];
                   var playerTwoCard = snapshot.data?['player_2_card'];
 
+                  print("firstPlayerDeck");
+                  print(firstPlayerDeck.length);
+                  print(firstPlayerDeck);
+                  print("secondPlayerDeck");
+                  print(secondPlayerDeck.length);
+                  print(secondPlayerDeck);
+                  print(" ");
+
                   if (snapshot.data?['player_1_answered_at'] != null) {
                     firstPlayerDeck.add(playerTwoCard);
+                    firstPlayerDeck.shuffle();
                   } else {
                     secondPlayerDeck.add(playerOneCard);
+                    secondPlayerDeck.shuffle();
                   }
+
+                  print("firstPlayerDeck");
+                  print(firstPlayerDeck.length);
+                  print(firstPlayerDeck);
+                  print("secondPlayerDeck");
+                  print(secondPlayerDeck.length);
+                  print(secondPlayerDeck);
 
                   var round = this.lastSnapshot.data?['round'];
 
@@ -194,6 +215,8 @@ class _MatchState extends State<Match> {
                       "answer": firstCard['number'] * secondCard['number'],
                     });
                   } else {
+                    print(firstPlayerDeck.length);
+                    print(secondPlayerDeck.length);
                     if (firstPlayerDeck.length > secondPlayerDeck.length) {
                       snapshot.data?.reference.update({
                         "winner": this.lastSnapshot.data?['player_1'],
