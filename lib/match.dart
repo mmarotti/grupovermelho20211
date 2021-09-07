@@ -54,8 +54,7 @@ class _MatchState extends State<Match> {
                     ],
                   );
                 } else if (snapshot.data?['winner'] != null) {
-                  print(widget.playerReference.id);
-                  print(snapshot.data?['winner']);
+
                   if (widget.playerReference.id == snapshot.data?['winner']) {
 
                     builder = Text('Congratulations you win!');
@@ -68,20 +67,12 @@ class _MatchState extends State<Match> {
                   // If player_2 just joined, player_1 will initialize match
                   var playerDecks = Game.initializeDecks();
 
-                  print(playerDecks);
-
                   var firstDeck = playerDecks[0];
                   var secondDeck = playerDecks[1];
-
-                  print(firstDeck);
-                  print(secondDeck);
 
                   var playerCards = Game.getCards(firstDeck, secondDeck);
                   var firstCard = playerCards[0];
                   var secondCard = playerCards[1];
-
-                  print(firstCard);
-                  print(secondCard);
 
                   snapshot.data?.reference.update({
                     "round": 1,
@@ -112,7 +103,6 @@ class _MatchState extends State<Match> {
                     }
                   }
                   answers.shuffle();
-                  print(answers);
                   builder = Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -144,14 +134,6 @@ class _MatchState extends State<Match> {
                   var playerOneCard = snapshot.data?['player_1_card'];
                   var playerTwoCard = snapshot.data?['player_2_card'];
 
-                  print("firstPlayerDeck");
-                  print(firstPlayerDeck.length);
-                  print(firstPlayerDeck);
-                  print("secondPlayerDeck");
-                  print(secondPlayerDeck.length);
-                  print(secondPlayerDeck);
-                  print(" ");
-
                   if (snapshot.data?['player_1_answered_at'] != null) {
                     firstPlayerDeck.add(playerTwoCard);
                     firstPlayerDeck.shuffle();
@@ -159,13 +141,6 @@ class _MatchState extends State<Match> {
                     secondPlayerDeck.add(playerOneCard);
                     secondPlayerDeck.shuffle();
                   }
-
-                  print("firstPlayerDeck");
-                  print(firstPlayerDeck.length);
-                  print(firstPlayerDeck);
-                  print("secondPlayerDeck");
-                  print(secondPlayerDeck.length);
-                  print(secondPlayerDeck);
 
                   var round = this.lastSnapshot.data?['round'];
 
@@ -175,9 +150,6 @@ class _MatchState extends State<Match> {
 
                     var firstCard = playerCards[0];
                     var secondCard = playerCards[1];
-
-                    print(firstCard);
-                    print(secondCard);
 
                     snapshot.data?.reference.update({
                       "round": snapshot.data?['round'] + 1,
@@ -190,8 +162,6 @@ class _MatchState extends State<Match> {
                       "answer": firstCard['number'] * secondCard['number'],
                     });
                   } else {
-                    print(firstPlayerDeck.length);
-                    print(secondPlayerDeck.length);
                     if (firstPlayerDeck.length > secondPlayerDeck.length) {
                       snapshot.data?.reference.update({
                         "winner": this.lastSnapshot.data?['player_1'],
@@ -242,7 +212,6 @@ Widget getAnswerOptions(List<dynamic> strings, snapshot, id, context, showDialog
             );
           } else {
             if (id == snapshot.data?['player_1']) {
-              print('Player one got it right');
               snapshot.data?.reference.update({
                 "player_1_answered_at": new DateTime.now(),
               });
