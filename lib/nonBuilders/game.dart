@@ -2,7 +2,7 @@ import 'package:playing_cards/playing_cards.dart';
 
 class Game {
   static List<List<dynamic>> initializeDecks() {
-    const cardNumbers = [2, 3, 4, 5, 6, 7, 8, 9];
+    const cardNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     var fullDeck = [
       ...cardNumbers

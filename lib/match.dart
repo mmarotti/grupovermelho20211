@@ -131,45 +131,7 @@ class _MatchState extends State<Match> {
                                 snapshot.data?['player_2_card']),
                           )
                         ]),
-                        Row(children: [
-                          Expanded(child:
-                              TextField(onSubmitted: (String value) async {
-                            var parsedValue = int.parse(value);
-
-                            if (parsedValue != snapshot.data?['answer']) {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Wrong!'),
-                                    content: Text(
-                                        'You couldn\'t get the answer right'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Try again'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            } else {
-                              if (widget.playerReference.id ==
-                                  snapshot.data?['player_1']) {
-                                print('Player one got it right');
-                                snapshot.data?.reference.update({
-                                  "player_1_answered_at": new DateTime.now(),
-                                });
-                              } else {
-                                snapshot.data?.reference.update({
-                                  "player_2_answered_at": new DateTime.now(),
-                                });
-                              }
-                            }
-                          }))
-                        ])
+                        getAnswerOptions(answers, snapshot, widget.playerReference.id, context, showDialog)
                       ],
                     ),
                   );
@@ -251,4 +213,47 @@ class _MatchState extends State<Match> {
       ),
     );
   }
+}
+
+Widget getAnswerOptions(List<dynamic> strings, snapshot, id, context, showDialog)
+{
+  return new Row(children: strings.map((item) => (
+      new TextButton(
+        onPressed: () async {
+          var parsedValue = item;
+          if (parsedValue != snapshot.data?['answer']) {
+            await showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Wrong!'),
+                  content: Text(
+                      'You couldn\'t get the answer right'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Try again'),
+                    ),
+                  ],
+                );
+              }
+            );
+          } else {
+            if (id == snapshot.data?['player_1']) {
+              print('Player one got it right');
+              snapshot.data?.reference.update({
+                "player_1_answered_at": new DateTime.now(),
+              });
+            } else {
+              snapshot.data?.reference.update({
+                "player_2_answered_at": new DateTime.now(),
+              });
+            }
+          }
+        },
+        child: Text(item.toString()),
+      )
+  )).toList());
 }
