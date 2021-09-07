@@ -255,5 +255,7 @@ Widget getAnswerOptions(List<dynamic> strings, snapshot, id, context, showDialog
         },
         child: Text(item.toString()),
       )
-  )).toList());
+  )).toList(),
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center);
 }

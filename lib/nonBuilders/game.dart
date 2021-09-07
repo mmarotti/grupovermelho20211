@@ -59,7 +59,10 @@ class Game {
       value = CardValue.seven;
     else if (number == 8)
       value = CardValue.eight;
-    else if (number == 9) value = CardValue.nine;
+    else if (number == 9)
+      value = CardValue.nine;
+    else if (number == 10)
+      value = CardValue.ten;
 
     if (suit == 'clubs')
       suitValue = Suit.clubs;
