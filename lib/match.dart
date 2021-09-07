@@ -2,6 +2,7 @@ import 'nonBuilders/game.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grupovermelho20211/styles/text.dart';
+import 'dart:math';
 
 // Main menu widget, responsible for rendering new game options
 
@@ -100,6 +101,18 @@ class _MatchState extends State<Match> {
                     snapshot.data?['player_1_answered_at'] == null &&
                     snapshot.data?['player_2_answered_at'] == null) {
                   // If cards already sorted, render cards
+                  var answers = [
+                    snapshot.data?['answer']
+                  ];
+                  while (answers.length < 3) {
+                    // wrong answer in range (2, 100)
+                    var wrongAnswer =  (new Random().nextInt(9) + 2) * (new Random().nextInt(9) + 2);
+                    if (!answers.contains(wrongAnswer)) {
+                      answers.add(wrongAnswer);
+                    }
+                  }
+                  answers.shuffle();
+                  print(answers);
                   builder = Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
