@@ -218,7 +218,7 @@ class _MatchState extends State<Match> {
 Widget getAnswerOptions(List<dynamic> strings, snapshot, id, context, showDialog)
 {
   return new Row(children: strings.map((item) => (
-      new TextButton(
+      Container(child: new TextButton(
         onPressed: () async {
           var parsedValue = item;
           if (parsedValue != snapshot.data?['answer']) {
@@ -253,9 +253,13 @@ Widget getAnswerOptions(List<dynamic> strings, snapshot, id, context, showDialog
             }
           }
         },
-        child: Text(item.toString()),
-      )
+        style: TextButton.styleFrom(backgroundColor: Colors.blueGrey, primary: Colors.white, padding: EdgeInsets.fromLTRB(20, 20, 20, 20)),
+        child: Text(item.toString(), style: new TextStyle(
+          fontSize: 28.0,
+        )),
+      ), margin: const EdgeInsets.fromLTRB(8.0, 32.0, 16.0, 0))
   )).toList(),
+
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center);
 }
