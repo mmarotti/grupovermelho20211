@@ -103,12 +103,23 @@ class _MatchState extends State<Match> {
                     }
                   }
                   answers.shuffle();
+
+                  var score = widget.playerReference.id == this.lastSnapshot.data?['player_1']
+                      ? "YOU: ${snapshot.data?["player_1_deck"].length} x ${snapshot.data?["player_2_deck"].length} OPPONENT"
+                      : "YOU: ${snapshot.data?["player_2_deck"].length} x ${snapshot.data?["player_1_deck"].length} OPPONENT";
+
                   builder = Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Center(child: Container(child: Text("Round ${this.lastSnapshot.data?['round'] == null ? 1 : this.lastSnapshot.data?['round'] + 1}/7",
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 20.0),
+                        ), margin: const EdgeInsets.fromLTRB(0, 0.0, 0, 32.0))),
+                        Center(child: Container(child: Text(score,
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 28.0),
+                        ), margin: const EdgeInsets.fromLTRB(0, 0.0, 0, 32.0))),
                         Row(children: [
                           Expanded(
                             flex: 2,
