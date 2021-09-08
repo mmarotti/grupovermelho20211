@@ -4,7 +4,8 @@ import 'styles/text.dart';
 
 import 'match.dart';
 
-// Join match widget, responsible for searching for an existant game
+// Join match widget, has a input were player can search for an existant game using it's identifier.
+// Player cannot join game if is the host or is already full (that is defined on firestore rules)
 
 class JoinMatch extends StatefulWidget {
   JoinMatch({Key? key, required this.playerReference}) : super(key: key);
@@ -94,7 +95,7 @@ class _JoinMatchState extends State<JoinMatch> {
                                           title:
                                               const Text('Cannot join match!'),
                                           content: Text(
-                                              'You don\'t have permission to join this match, probably because you\'re the host'),
+                                              'You don\'t have permission to join this match, probably because you\'re the host or the match is full'),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {

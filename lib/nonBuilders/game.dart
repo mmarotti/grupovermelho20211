@@ -1,5 +1,8 @@
 import 'package:playing_cards/playing_cards.dart';
 
+// Non builder class, responsible for dealing and altering match state.
+// Has functions to initilaze shuffled decks, draw cards and rendering
+
 class Game {
   static List<List<dynamic>> initializeDecks() {
     const cardNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -61,8 +64,7 @@ class Game {
       value = CardValue.eight;
     else if (number == 9)
       value = CardValue.nine;
-    else if (number == 10)
-      value = CardValue.ten;
+    else if (number == 10) value = CardValue.ten;
 
     if (suit == 'clubs')
       suitValue = Suit.clubs;

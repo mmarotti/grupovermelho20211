@@ -3,6 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'mainMenu.dart';
 
+// Root widget of application, responsible for starting firestore, creating a new player
+// and rendering MainMenu passing created player and application theme
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -19,8 +22,6 @@ void main() async {
     playerReference: playerReference,
   ));
 }
-
-// Root widget of your application.
 
 class App extends StatelessWidget {
   App({Key? key, required this.playerReference}) : super(key: key);

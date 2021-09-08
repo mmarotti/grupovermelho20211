@@ -5,7 +5,9 @@ import 'styles/text.dart';
 import 'match.dart';
 import 'joinMatch.dart';
 
-// Main menu widget, responsible for rendering new game options
+// Main menu widget, responsible for rendering New Game options.
+// If player chooses to join a new match, will create it and render Match.
+// Else will redirect user to JoinMatch widget
 
 class MainMenu extends StatefulWidget {
   MainMenu({Key? key, required this.playerReference}) : super(key: key);

@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grupovermelho20211/styles/text.dart';
 import 'dart:math';
 
-// Main menu widget, responsible for rendering new game options
+// Match widget, responsible for defining actions based on firestore stream,
+// such as rendering cards, computing points and deck managment
 
 //ignore: must_be_immutable
 class Match extends StatefulWidget {
@@ -54,9 +55,9 @@ class _MatchState extends State<Match> {
                     ],
                   );
                 } else if (snapshot.data?['winner'] != null) {
+                  // If match ended, show message based on player situation (winner or loser)
 
                   if (widget.playerReference.id == snapshot.data?['winner']) {
-
                     builder = Text('Congratulations you win!');
                   } else {
                     builder = Text('You lost, you will get it next time =)');
@@ -92,19 +93,20 @@ class _MatchState extends State<Match> {
                     snapshot.data?['player_1_answered_at'] == null &&
                     snapshot.data?['player_2_answered_at'] == null) {
                   // If cards already sorted, render cards
-                  var answers = [
-                    snapshot.data?['answer']
-                  ];
+                  var answers = [snapshot.data?['answer']];
+
                   while (answers.length < 3) {
                     // wrong answer in range (2, 100)
-                    var wrongAnswer =  (new Random().nextInt(9) + 2) * (new Random().nextInt(9) + 2);
+                    var wrongAnswer = (new Random().nextInt(9) + 2) *
+                        (new Random().nextInt(9) + 2);
                     if (!answers.contains(wrongAnswer)) {
                       answers.add(wrongAnswer);
                     }
                   }
                   answers.shuffle();
 
-                  var score = widget.playerReference.id == this.lastSnapshot.data?['player_1']
+                  var score = widget.playerReference.id ==
+                          this.lastSnapshot.data?['player_1']
                       ? "YOU: ${snapshot.data?["player_1_deck"].length} x ${snapshot.data?["player_2_deck"].length} OPPONENT"
                       : "YOU: ${snapshot.data?["player_2_deck"].length} x ${snapshot.data?["player_1_deck"].length} OPPONENT";
 
@@ -114,12 +116,28 @@ class _MatchState extends State<Match> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Center(child: Container(child: Text("Round ${this.lastSnapshot.data?['round'] == null ? 1 : this.lastSnapshot.data?['round'] + 1}/7",
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 20.0),
-                        ), margin: const EdgeInsets.fromLTRB(0, 0.0, 0, 32.0))),
-                        Center(child: Container(child: Text(score,
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 28.0),
-                        ), margin: const EdgeInsets.fromLTRB(0, 0.0, 0, 32.0))),
+                        Center(
+                            child: Container(
+                                child: Text(
+                                  "Round ${this.lastSnapshot.data?['round'] == null ? 1 : this.lastSnapshot.data?['round'] + 1}/7",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blueGrey,
+                                      fontSize: 20.0),
+                                ),
+                                margin: const EdgeInsets.fromLTRB(
+                                    0, 0.0, 0, 32.0))),
+                        Center(
+                            child: Container(
+                                child: Text(
+                                  score,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blueGrey,
+                                      fontSize: 28.0),
+                                ),
+                                margin: const EdgeInsets.fromLTRB(
+                                    0, 0.0, 0, 32.0))),
                         Row(children: [
                           Expanded(
                             flex: 2,
@@ -132,14 +150,20 @@ class _MatchState extends State<Match> {
                                 snapshot.data?['player_2_card']),
                           )
                         ]),
-                        getAnswerOptions(answers, snapshot, widget.playerReference.id, context, showDialog)
+                        getAnswerOptions(answers, snapshot,
+                            widget.playerReference.id, context, showDialog)
                       ],
                     ),
                   );
                 } else if ((snapshot.data?['player_1_answered_at'] != null &&
                         snapshot.data?['player_2_answered_at'] == null) ||
                     (snapshot.data?['player_2_answered_at'] != null &&
-                        snapshot.data?['player_1_answered_at'] == null)) {
+                            snapshot.data?['player_1_answered_at'] == null) &&
+                        widget.playerReference.id ==
+                            this.lastSnapshot.data?['player_1']) {
+                  // Get's the player that awnsered firsts and updates match decks
+                  // Only player_1 will do this process
+
                   var firstPlayerDeck = snapshot.data?['player_1_deck'];
                   var secondPlayerDeck = snapshot.data?['player_2_deck'];
                   var playerOneCard = snapshot.data?['player_1_card'];
@@ -196,50 +220,56 @@ class _MatchState extends State<Match> {
   }
 }
 
-Widget getAnswerOptions(List<dynamic> strings, snapshot, id, context, showDialog)
-{
-  return new Row(children: strings.map((item) => (
-      Container(child: new TextButton(
-        onPressed: () async {
-          var parsedValue = item;
-          if (parsedValue != snapshot.data?['answer']) {
-            await showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Wrong!'),
-                  content: Text(
-                      'You couldn\'t get the answer right'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Try again'),
-                    ),
-                  ],
-                );
-              }
-            );
-          } else {
-            if (id == snapshot.data?['player_1']) {
-              snapshot.data?.reference.update({
-                "player_1_answered_at": new DateTime.now(),
-              });
-            } else {
-              snapshot.data?.reference.update({
-                "player_2_answered_at": new DateTime.now(),
-              });
-            }
-          }
-        },
-        style: TextButton.styleFrom(backgroundColor: Colors.blueGrey, primary: Colors.white, padding: EdgeInsets.fromLTRB(20, 20, 20, 20)),
-        child: Text(item.toString(), style: new TextStyle(
-          fontSize: 28.0,
-        )),
-      ), margin: const EdgeInsets.fromLTRB(8.0, 32.0, 16.0, 0))
-  )).toList(),
+// Widget responsible for rendering options based on anwser
 
+Widget getAnswerOptions(
+    List<dynamic> strings, snapshot, id, context, showDialog) {
+  return new Row(
+      children: strings
+          .map((item) => (Container(
+              child: new TextButton(
+                onPressed: () async {
+                  var parsedValue = item;
+                  if (parsedValue != snapshot.data?['answer']) {
+                    await showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Wrong!'),
+                            content: Text('You couldn\'t get the answer right'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Try again'),
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    if (id == snapshot.data?['player_1']) {
+                      snapshot.data?.reference.update({
+                        "player_1_answered_at": new DateTime.now(),
+                      });
+                    } else {
+                      snapshot.data?.reference.update({
+                        "player_2_answered_at": new DateTime.now(),
+                      });
+                    }
+                  }
+                },
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.blueGrey,
+                    primary: Colors.white,
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 20)),
+                child: Text(item.toString(),
+                    style: new TextStyle(
+                      fontSize: 28.0,
+                    )),
+              ),
+              margin: const EdgeInsets.fromLTRB(8.0, 32.0, 16.0, 0))))
+          .toList(),
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center);
 }
