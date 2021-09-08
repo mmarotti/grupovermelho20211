@@ -155,12 +155,12 @@ class _MatchState extends State<Match> {
                       ],
                     ),
                   );
-                } else if ((snapshot.data?['player_1_answered_at'] != null &&
-                        snapshot.data?['player_2_answered_at'] == null) ||
-                    (snapshot.data?['player_2_answered_at'] != null &&
-                            snapshot.data?['player_1_answered_at'] == null) &&
-                        widget.playerReference.id ==
-                            this.lastSnapshot.data?['player_1']) {
+                } else if (((snapshot.data?['player_1_answered_at'] != null &&
+                            snapshot.data?['player_2_answered_at'] == null) ||
+                        (snapshot.data?['player_2_answered_at'] != null &&
+                            snapshot.data?['player_1_answered_at'] == null)) &&
+                    widget.playerReference.id ==
+                        this.lastSnapshot.data?['player_1']) {
                   // Get's the player that awnsered firsts and updates match decks
                   // Only player_1 will do this process
 
