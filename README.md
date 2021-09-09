@@ -35,3 +35,11 @@ flutter build apk --no-sound-null-safety
 ```
 
 The resultant app will be on build/app/outputs/flutter-apk/app-release.apk with estimated size of 20 MB
+
+## Tests
+
+The project was tested on the following devices:
+
+- Motorola G6 plus;
+- Motorola G5 S;
+- Samsung S10
